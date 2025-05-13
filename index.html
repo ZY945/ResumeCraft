@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown编辑器</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+      
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #2c3e50;
+        color: white;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      
+      .btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      
+      .btn:hover {
+        background-color: #2980b9;
+      }
+      
+      .editor-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+      
+      .editor-panel {
+        flex: 1;
+        padding: 1rem;
+        border-right: 1px solid #eee;
+      }
+      
+      .markdown-input {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        font-family: monospace;
+        font-size: 1rem;
+        resize: none;
+      }
+      
+      .preview-panel {
+        flex: 1;
+        padding: 1rem;
+        overflow: auto;
+      }
+      
+      .markdown-preview {
+        padding: 1rem;
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      
+      /* 简历标题样式 */
+      .resume-name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #2c3e50;
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      
+      .resume-section {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #3498db;
+        color: #2c3e50;
+      }
+      
+      .resume-subsection {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #2c3e50;
+      }
+      
+      /* 列表样式 */
+      .markdown-preview ul, .markdown-preview ol {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        padding-left: 2em;
+      }
+      
+      .markdown-preview li {
+        margin-bottom: 0.3em;
+      }
+      
+      /* 段落样式 */
+      .markdown-preview p {
+        margin-bottom: 1em;
+      }
+      
+      /* 链接样式 */
+      .markdown-preview a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      
+      .markdown-preview a:hover {
+        text-decoration: underline;
+      }
+      
+      /* 强调和斜体 */
+      .markdown-preview strong {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+      
+      .markdown-preview em {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>简历编辑器</h1>
+        <div>
+          <button class="btn" id="load-resume-template" style="margin-right: 10px;">加载简历模板</button>
+          <button class="btn" id="export-pdf">导出PDF</button>
+        </div>
+      </header>
+      <div class="editor-container">
+        <div class="editor-panel">
+          <textarea class="markdown-input" id="markdown-input"># 欢迎使用Markdown编辑器
+
+这是一个简单的**Markdown编辑器**，你可以在左侧输入Markdown格式的文本，右侧会实时显示预览效果。
+
+## 功能特点
+
+- 实时预览
+- 导出PDF
+- 简洁美观的界面
+
+### 如何使用
+
+1. 在左侧编辑区输入Markdown文本
+2. 右侧会实时显示渲染后的效果
+3. 点击顶部的「导出PDF」按钮可以将内容导出为PDF文件</textarea>
+        </div>
+        <div class="preview-panel">
+          <div class="markdown-preview" id="markdown-preview"></div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const markdownInput = document.getElementById('markdown-input');
+        const markdownPreview = document.getElementById('markdown-preview');
+        const exportPdfBtn = document.getElementById('export-pdf');
+        const loadResumeTemplateBtn = document.getElementById('load-resume-template');
+        
+        // 简历模板
+        const resumeTemplate = `# 姓名
+电话｜邮箱@example.com
+
+## 教育背景
+**大学名称 - 学历 - 专业名称（20XX.09-20XX.07）**
+- **个人介绍：**技术博主；开源贡献者；
+
+- **Github**: [https://github.com/yourusername](https://github.com/yourusername)
+
+- **博客地址**: [https://yourblog.com](https://yourblog.com)
+
+- **个人介绍**：积极参与开源社区活动，同时是社区成员。
+
+## 工作经历
+**公司名称 - 部门名称 - 职位名称（20XX.MM - 至今）城市**
+
+**公司介绍**：简要描述公司的主要业务和特点。
+
+**业务背景**：简要描述您所参与的业务背景和面临的挑战。
+
+**技术栈**：列出项目中使用的主要技术，如 Spring Boot, Redis, MySQL 等
+
+**工作内容**：
+
+- 设计并实现了某某系统，解决了什么问题
+
+- 负责某某功能的开发，提高了系统性能或用户体验
+
+- 独立完成了某项技术的调研和实施
+
+## 实习经历
+**公司名称 - 部门名称 - 职位名称（20XX.MM - 20XX.MM）城市**
+
+**公司介绍**：简要描述公司的主要业务和特点。
+
+**工作内容**：简要描述您在实习期间的主要工作内容和成果。
+
+## 项目经验
+
+**项目名称：项目名称**
+
+**项目描述**：简要描述项目的目标和功能。
+
+**技术栈**：列出项目中使用的主要技术
+
+**负责模块**：
+- 模块一
+- 模块二
+- 模块三
+
+## 技能清单
+
+- **编程语言**：列出您掌握的编程语言
+- **框架**：列出您熟悉的框架
+- **数据库**：列出您使用过的数据库
+- **工具**：列出您熟悉的开发工具
+- **其他技能**：列出其他相关技能
+
+## 语言能力
+
+- 英语（熟练程度）
+- 其他语言（熟练程度）
+
+## 奖项荣誉
+
+- 奖项一 (年份)
+- 奖项二 (年份)
+- 奖项三 (年份)`;
+        
+        // 增强的Markdown转HTML函数，更好地支持简历格式
+        function convertMarkdownToHtml(markdown) {
+          let html = markdown
+            // 标题
+            .replace(/^# (.+)$/gm, '<h1 class="resume-name">$1</h1>')
+            .replace(/^## (.+)$/gm, '<h2 class="resume-section">$1</h2>')
+            .replace(/^### (.+)$/gm, '<h3 class="resume-subsection">$1</h3>')
+            
+            // 列表
+            .replace(/^- (.+)$/gm, '<ul class="resume-list"><li>$1</li></ul>')
+            .replace(/^(\d+)\. (.+)$/gm, '<ol class="resume-ordered-list"><li>$2</li></ol>')
+            
+            // 文本格式
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            
+            // 链接
+            .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>')
+            
+            // 段落
+            .replace(/\n\n/gm, '</p><p>')
+            .replace(/\n/gm, '<br>');
+          
+          // 处理多个连续的列表项
+          html = html.replace(/<\/ul><ul class="resume-list">/g, '');
+          html = html.replace(/<\/ol><ol class="resume-ordered-list">/g, '');
+          
+          // 包裹在段落标签中
+          if (!html.startsWith('<')) {
+            html = '<p>' + html;
+          }
+          if (!html.endsWith('>')) {
+            html = html + '</p>';
+          }
+          
+          return html;
+        }
+        
+        // 初始渲染
+        markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
+        
+        // 监听输入变化
+        markdownInput.addEventListener('input', function() {
+          markdownPreview.innerHTML = convertMarkdownToHtml(this.value);
+        });
+        
+        // 加载简历模板
+        loadResumeTemplateBtn.addEventListener('click', function() {
+          if (markdownInput.value.trim() !== '') {
+            if (!confirm('加载模板将覆盖当前内容，是否继续？')) {
+              return;
+            }
+          }
+          markdownInput.value = resumeTemplate;
+          markdownPreview.innerHTML = convertMarkdownToHtml(resumeTemplate);
+        });
+        
+        // 导出PDF功能
+        exportPdfBtn.addEventListener('click', function() {
+          // 创建一个新的窗口来显示打印预览
+          const printWindow = window.open('', '_blank');
+          
+          // 写入打印样式和内容
+          printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>简历预览</title>
+              <style>
+                body {
+                  font-family: 'Arial', sans-serif;
+                  line-height: 1.6;
+                  color: #333;
+                  max-width: 800px;
+                  margin: 0 auto;
+                  padding: 20px;
+                }
+                .resume-name {
+                  font-size: 24px;
+                  font-weight: bold;
+                  margin-bottom: 5px;
+                  color: #2c3e50;
+                }
+                .resume-section {
+                  font-size: 18px;
+                  font-weight: bold;
+                  margin-top: 20px;
+                  margin-bottom: 10px;
+                  padding-bottom: 5px;
+                  border-bottom: 1px solid #eaecef;
+                  color: #2c3e50;
+                }
+                .resume-subsection {
+                  font-size: 16px;
+                  font-weight: bold;
+                  margin-top: 15px;
+                  margin-bottom: 10px;
+                  color: #2c3e50;
+                }
+                .resume-list, .resume-ordered-list {
+                  margin-top: 5px;
+                  margin-bottom: 5px;
+                }
+                p {
+                  margin-bottom: 10px;
+                }
+                a {
+                  color: #3498db;
+                  text-decoration: none;
+                }
+                a:hover {
+                  text-decoration: underline;
+                }
+                @media print {
+                  body {
+                    padding: 0;
+                  }
+                  a {
+                    color: #333;
+                    text-decoration: none;
+                  }
+                }
+              </style>
+            </head>
+            <body>
+              ${markdownPreview.innerHTML}
+            </body>
+            </html>
+          `);
+          
+          // 等待内容加载完成后打印
+          printWindow.document.close();
+          printWindow.onload = function() {
+            printWindow.print();
+            // printWindow.close(); // 可选，打印后自动关闭窗口
+          };
+        });
+      });
+    </script>
+  </body>
+</html>
