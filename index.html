@@ -15,145 +15,405 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         line-height: 1.6;
         color: #333;
-        background-color: #f5f5f5;
+        background-color: #f8f9fa;
       }
       
       .container {
         display: flex;
         flex-direction: column;
         height: 100vh;
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
         background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
       }
       
       .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
-        background-color: #2c3e50;
+        padding: 1rem 1.5rem;
+        background-color: #1e88e5;
         color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
       
       .header h1 {
         font-size: 1.5rem;
         margin: 0;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+      }
+      
+      .header h1:before {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        background-color: white;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M9,13H15V15H9V13M9,9H13V11H9V9M9,17H15V19H9V17Z' fill='white'/%3E%3C/svg%3E");
+        mask-size: cover;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M9,13H15V15H9V13M9,9H13V11H9V9M9,17H15V19H9V17Z' fill='white'/%3E%3C/svg%3E");
+        -webkit-mask-size: cover;
+      }
+      
+      .btn-group {
+        display: flex;
+        gap: 10px;
       }
       
       .btn {
-        background-color: #3498db;
+        background-color: rgba(255, 255, 255, 0.2);
         color: white;
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 4px;
         cursor: pointer;
         font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
       }
       
       .btn:hover {
-        background-color: #2980b9;
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+      
+      .btn:before {
+        content: '';
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+        background-color: white;
+        mask-size: cover;
+        -webkit-mask-size: cover;
+      }
+      
+      #load-resume-template:before {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M9,13H15V15H9V13M9,9H13V11H9V9M9,17H15V19H9V17Z' fill='white'/%3E%3C/svg%3E");
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M9,13H15V15H9V13M9,9H13V11H9V9M9,17H15V19H9V17Z' fill='white'/%3E%3C/svg%3E");
+      }
+      
+      #upload-image:before {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z' fill='white'/%3E%3C/svg%3E");
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z' fill='white'/%3E%3C/svg%3E");
+      }
+      
+      #export-pdf:before {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M10.59,10.08C10.57,10.13 10.3,11.84 8.5,14.77C8.5,14.77 8,15.5 7.5,16.5C7.5,16.5 8.5,16.5 9.5,16.5C9.5,16.5 10,15.5 10.5,15C10.5,15 12.5,15 14,16C14,16 14,15.5 14,14.5C14,14.5 11.58,11.63 10.59,10.08M19,12V13H15.5V12H19M19,15V16H15.5V15H19M19,9V10H15.5V9H19M5,9V10H8.5V9H5M5,12V13H8.5V12H5M5,15V16H8.5V15H5Z' fill='white'/%3E%3C/svg%3E");
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M10.59,10.08C10.57,10.13 10.3,11.84 8.5,14.77C8.5,14.77 8,15.5 7.5,16.5C7.5,16.5 8.5,16.5 9.5,16.5C9.5,16.5 10,15.5 10.5,15C10.5,15 12.5,15 14,16C14,16 14,15.5 14,14.5C14,14.5 11.58,11.63 10.59,10.08M19,12V13H15.5V12H19M19,15V16H15.5V15H19M19,9V10H15.5V9H19M5,9V10H8.5V9H5M5,12V13H8.5V12H5M5,15V16H8.5V15H5Z' fill='white'/%3E%3C/svg%3E");
       }
       
       .editor-container {
         display: flex;
         flex: 1;
         overflow: hidden;
+        background-color: #f8f9fa;
       }
       
       .editor-panel {
         flex: 1;
-        padding: 1rem;
-        border-right: 1px solid #eee;
+        padding: 1.5rem;
+        border-right: 1px solid #e9ecef;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .panel-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #6c757d;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .panel-title:before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        background-color: #6c757d;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z' fill='%236c757d'/%3E%3C/svg%3E");
+        mask-size: cover;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z' fill='%236c757d'/%3E%3C/svg%3E");
+        -webkit-mask-size: cover;
       }
       
       .markdown-input {
         width: 100%;
-        height: 100%;
-        border: 1px solid #ddd;
+        flex: 1;
+        border: 1px solid #e9ecef;
         border-radius: 4px;
         padding: 1rem;
-        font-family: monospace;
-        font-size: 1rem;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
         resize: none;
+        color: #495057;
+        background-color: #fff;
+        transition: border-color 0.2s;
+      }
+      
+      .markdown-input:focus {
+        outline: none;
+        border-color: #1e88e5;
+        box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
       }
       
       .preview-panel {
         flex: 1;
-        padding: 1rem;
+        padding: 1.5rem;
         overflow: auto;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .preview-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #6c757d;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .preview-title:before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        background-color: #6c757d;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z' fill='%236c757d'/%3E%3C/svg%3E");
+        mask-size: cover;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z' fill='%236c757d'/%3E%3C/svg%3E");
+        -webkit-mask-size: cover;
       }
       
       .markdown-preview {
-        padding: 1rem;
-        font-family: 'Arial', sans-serif;
+        padding: 1.5rem;
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         line-height: 1.6;
         color: #333;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        background-color: white;
+        flex: 1;
+        overflow: auto;
       }
       
       /* 简历标题样式 */
       .resume-name {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
-        margin-bottom: 5px;
-        color: #2c3e50;
+        margin-bottom: 8px;
+        color: #1e88e5;
         border-bottom: none;
         padding-bottom: 0;
+        letter-spacing: -0.5px;
       }
       
       .resume-section {
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #3498db;
-        color: #2c3e50;
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #1e88e5;
+        color: #1e88e5;
+        letter-spacing: -0.3px;
       }
       
       .resume-subsection {
-        font-size: 16px;
-        font-weight: bold;
-        margin-top: 15px;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 16px;
         margin-bottom: 10px;
         color: #2c3e50;
+        letter-spacing: -0.2px;
       }
       
       /* 列表样式 */
       .markdown-preview ul, .markdown-preview ol {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        padding-left: 2em;
+        margin-top: 0.6em;
+        margin-bottom: 0.8em;
+        padding-left: 1.8em;
       }
       
       .markdown-preview li {
-        margin-bottom: 0.3em;
+        margin-bottom: 0.4em;
+        line-height: 1.6;
       }
       
       /* 段落样式 */
       .markdown-preview p {
         margin-bottom: 1em;
+        line-height: 1.6;
       }
       
       /* 链接样式 */
       .markdown-preview a {
-        color: #3498db;
+        color: #1e88e5;
         text-decoration: none;
+        border-bottom: 1px dashed #1e88e5;
+        transition: border-bottom 0.2s, color 0.2s;
       }
       
       .markdown-preview a:hover {
-        text-decoration: underline;
+        color: #1565c0;
+        border-bottom: 1px solid #1565c0;
+        text-decoration: none;
       }
       
       /* 强调和斜体 */
       .markdown-preview strong {
-        font-weight: bold;
+        font-weight: 600;
         color: #2c3e50;
       }
       
       .markdown-preview em {
         font-style: italic;
+        color: #546e7a;
+      }
+      
+      /* 自定义滚动条 */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+      
+      /* 可拖拽图片样式 */
+      .draggable-image {
+        position: absolute;
+        cursor: move;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: border-color 0.2s;
+        max-width: 100%;
+        max-height: 300px;
+        z-index: 10;
+      }
+      
+      .draggable-image:hover {
+        border-color: #1e88e5;
+      }
+      
+      .draggable-image.active {
+        border-color: #1e88e5;
+        box-shadow: 0 0 10px rgba(30, 136, 229, 0.3);
+      }
+      
+      .resize-handle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #1e88e5;
+        border-radius: 50%;
+        z-index: 20;
+      }
+      
+      .resize-handle.nw {
+        top: -5px;
+        left: -5px;
+        cursor: nwse-resize;
+      }
+      
+      .resize-handle.ne {
+        top: -5px;
+        right: -5px;
+        cursor: nesw-resize;
+      }
+      
+      .resize-handle.sw {
+        bottom: -5px;
+        left: -5px;
+        cursor: nesw-resize;
+      }
+      
+      .resize-handle.se {
+        bottom: -5px;
+        right: -5px;
+        cursor: nwse-resize;
+      }
+      
+      .image-toolbar {
+        position: absolute;
+        top: -30px;
+        right: 0;
+        display: flex;
+        gap: 5px;
+        background-color: white;
+        border-radius: 4px;
+        padding: 3px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 20;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      
+      .draggable-image:hover .image-toolbar,
+      .draggable-image.active .image-toolbar {
+        opacity: 1;
+      }
+      
+      .image-toolbar-btn {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .image-toolbar-btn:hover {
+        background-color: #f0f0f0;
+      }
+      
+      .image-toolbar-btn svg {
+        width: 16px;
+        height: 16px;
+        fill: #555;
+      }
+      
+      /* 预览区相对定位 */
+      .markdown-preview {
+        position: relative;
+      }
+      
+      @media (max-width: 768px) {
+        .editor-container {
+          flex-direction: column;
+        }
+        
+        .editor-panel, .preview-panel {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid #e9ecef;
+        }
       }
     </style>
   </head>
@@ -161,14 +421,17 @@
     <div class="container">
       <header class="header">
         <h1>简历编辑器</h1>
-        <div>
-          <button class="btn" id="load-resume-template" style="margin-right: 10px;">加载简历模板</button>
+        <div class="btn-group">
+          <button class="btn" id="load-resume-template">加载简历模板</button>
+          <button class="btn" id="upload-image">上传图片</button>
           <button class="btn" id="export-pdf">导出PDF</button>
+          <input type="file" id="image-input" accept="image/*" style="display: none;">
         </div>
       </header>
       <div class="editor-container">
         <div class="editor-panel">
-          <textarea class="markdown-input" id="markdown-input"># 欢迎使用Markdown编辑器
+          <div class="panel-title">编辑区</div>
+          <textarea class="markdown-input" id="markdown-input" placeholder="在这里输入Markdown格式的简历内容..."># 欢迎使用Markdown编辑器
 
 这是一个简单的**Markdown编辑器**，你可以在左侧输入Markdown格式的文本，右侧会实时显示预览效果。
 
@@ -185,6 +448,7 @@
 3. 点击顶部的「导出PDF」按钮可以将内容导出为PDF文件</textarea>
         </div>
         <div class="preview-panel">
+          <div class="preview-title">预览区</div>
           <div class="markdown-preview" id="markdown-preview"></div>
         </div>
       </div>
@@ -196,6 +460,18 @@
         const markdownPreview = document.getElementById('markdown-preview');
         const exportPdfBtn = document.getElementById('export-pdf');
         const loadResumeTemplateBtn = document.getElementById('load-resume-template');
+        const uploadImageBtn = document.getElementById('upload-image');
+        const imageInput = document.getElementById('image-input');
+        
+        // 全局变量跟踪活动图片
+        let activeImage = null;
+        let imageCounter = 0;
+        let dragStartX, dragStartY;
+        let imageStartX, imageStartY;
+        let resizing = false;
+        let resizeHandle = null;
+        let originalWidth, originalHeight;
+        let aspectRatio;
         
         // 简历模板
         const resumeTemplate = `# 姓名
@@ -324,8 +600,255 @@
           markdownPreview.innerHTML = convertMarkdownToHtml(resumeTemplate);
         });
         
+        // 上传图片功能
+        uploadImageBtn.addEventListener('click', function() {
+          imageInput.click();
+        });
+        
+        // 处理图片上传
+        imageInput.addEventListener('change', function(e) {
+          if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+              addImageToPreview(event.target.result);
+            };
+            
+            reader.readAsDataURL(file);
+          }
+        });
+        
+        // 添加图片到预览区
+        function addImageToPreview(imageUrl) {
+          const imageId = 'draggable-image-' + (++imageCounter);
+          
+          // 创建图片元素
+          const imgContainer = document.createElement('div');
+          imgContainer.className = 'draggable-image';
+          imgContainer.id = imageId;
+          imgContainer.style.left = '50px';
+          imgContainer.style.top = '50px';
+          imgContainer.dataset.x = '50';
+          imgContainer.dataset.y = '50';
+          
+          // 创建图片
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.style.width = '200px';
+          img.style.display = 'block';
+          
+          // 创建工具栏
+          const toolbar = document.createElement('div');
+          toolbar.className = 'image-toolbar';
+          
+          // 删除按钮
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'image-toolbar-btn';
+          deleteBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"></path></svg>';
+          deleteBtn.title = '删除图片';
+          deleteBtn.addEventListener('click', function() {
+            imgContainer.remove();
+            if (activeImage === imgContainer) {
+              activeImage = null;
+            }
+          });
+          
+          // 添加按钮到工具栏
+          toolbar.appendChild(deleteBtn);
+          
+          // 创建调整大小的手柄
+          const handles = ['nw', 'ne', 'sw', 'se'];
+          handles.forEach(pos => {
+            const handle = document.createElement('div');
+            handle.className = `resize-handle ${pos}`;
+            handle.dataset.handle = pos;
+            imgContainer.appendChild(handle);
+          });
+          
+          // 添加元素到容器
+          imgContainer.appendChild(img);
+          imgContainer.appendChild(toolbar);
+          markdownPreview.appendChild(imgContainer);
+          
+          // 设置为活动图片
+          setActiveImage(imgContainer);
+          
+          // 添加拖拽事件
+          setupDragEvents(imgContainer);
+        }
+        
+        // 设置活动图片
+        function setActiveImage(image) {
+          // 移除之前活动图片的活动状态
+          if (activeImage) {
+            activeImage.classList.remove('active');
+          }
+          
+          // 设置新的活动图片
+          activeImage = image;
+          if (activeImage) {
+            activeImage.classList.add('active');
+          }
+        }
+        
+        // 设置拖拽事件
+        function setupDragEvents(element) {
+          element.addEventListener('mousedown', startDrag);
+          
+          // 为调整大小的手柄添加事件
+          const handles = element.querySelectorAll('.resize-handle');
+          handles.forEach(handle => {
+            handle.addEventListener('mousedown', startResize);
+          });
+        }
+        
+        // 开始拖拽
+        function startDrag(e) {
+          // 如果点击的是调整大小的手柄，不处理拖拽
+          if (e.target.classList.contains('resize-handle') || e.target.closest('.image-toolbar')) {
+            return;
+          }
+          
+          const element = e.target.closest('.draggable-image');
+          if (!element) return;
+          
+          e.preventDefault();
+          
+          // 设置为活动图片
+          setActiveImage(element);
+          
+          // 记录起始位置
+          dragStartX = e.clientX;
+          dragStartY = e.clientY;
+          imageStartX = parseInt(element.dataset.x || 0);
+          imageStartY = parseInt(element.dataset.y || 0);
+          
+          // 添加移动和释放事件
+          document.addEventListener('mousemove', dragMove);
+          document.addEventListener('mouseup', dragEnd);
+        }
+        
+        // 拖拽移动
+        function dragMove(e) {
+          if (!activeImage || resizing) return;
+          
+          const dx = e.clientX - dragStartX;
+          const dy = e.clientY - dragStartY;
+          
+          const newX = imageStartX + dx;
+          const newY = imageStartY + dy;
+          
+          activeImage.style.left = newX + 'px';
+          activeImage.style.top = newY + 'px';
+          activeImage.dataset.x = newX;
+          activeImage.dataset.y = newY;
+        }
+        
+        // 结束拖拽
+        function dragEnd() {
+          document.removeEventListener('mousemove', dragMove);
+          document.removeEventListener('mouseup', dragEnd);
+        }
+        
+        // 开始调整大小
+        function startResize(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          resizing = true;
+          resizeHandle = e.target;
+          const element = resizeHandle.closest('.draggable-image');
+          
+          // 设置为活动图片
+          setActiveImage(element);
+          
+          // 记录起始位置和大小
+          dragStartX = e.clientX;
+          dragStartY = e.clientY;
+          const img = element.querySelector('img');
+          originalWidth = img.offsetWidth;
+          originalHeight = img.offsetHeight;
+          aspectRatio = originalWidth / originalHeight;
+          
+          // 添加移动和释放事件
+          document.addEventListener('mousemove', resizeMove);
+          document.addEventListener('mouseup', resizeEnd);
+        }
+        
+        // 调整大小移动
+        function resizeMove(e) {
+          if (!activeImage || !resizing) return;
+          
+          const dx = e.clientX - dragStartX;
+          const dy = e.clientY - dragStartY;
+          const img = activeImage.querySelector('img');
+          const handle = resizeHandle.dataset.handle;
+          
+          let newWidth, newHeight;
+          
+          // 根据不同的手柄调整大小
+          switch (handle) {
+            case 'se':
+              newWidth = originalWidth + dx;
+              newHeight = newWidth / aspectRatio;
+              break;
+            case 'sw':
+              newWidth = originalWidth - dx;
+              newHeight = newWidth / aspectRatio;
+              break;
+            case 'ne':
+              newWidth = originalWidth + dx;
+              newHeight = newWidth / aspectRatio;
+              break;
+            case 'nw':
+              newWidth = originalWidth - dx;
+              newHeight = newWidth / aspectRatio;
+              break;
+          }
+          
+          // 设置最小大小
+          newWidth = Math.max(50, newWidth);
+          newHeight = newWidth / aspectRatio;
+          
+          img.style.width = newWidth + 'px';
+        }
+        
+        // 结束调整大小
+        function resizeEnd() {
+          resizing = false;
+          document.removeEventListener('mousemove', resizeMove);
+          document.removeEventListener('mouseup', resizeEnd);
+        }
+        
+        // 点击预览区外部时取消选中图片
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.draggable-image') && !e.target.closest('.image-toolbar')) {
+            setActiveImage(null);
+          }
+        });
+        
         // 导出PDF功能
         exportPdfBtn.addEventListener('click', function() {
+          // 暂时隐藏图片上的控件
+          const images = markdownPreview.querySelectorAll('.draggable-image');
+          images.forEach(img => {
+            img.classList.remove('active');
+            const handles = img.querySelectorAll('.resize-handle');
+            const toolbar = img.querySelector('.image-toolbar');
+            
+            // 保存原始显示状态
+            handles.forEach(handle => {
+              handle.dataset.originalDisplay = handle.style.display;
+              handle.style.display = 'none';
+            });
+            
+            if (toolbar) {
+              toolbar.dataset.originalDisplay = toolbar.style.display;
+              toolbar.style.display = 'none';
+            }
+          });
+          
           // 创建一个新的窗口来显示打印预览
           const printWindow = window.open('', '_blank');
           
@@ -380,6 +903,14 @@
                 a:hover {
                   text-decoration: underline;
                 }
+                .draggable-image {
+                  position: relative !important;
+                  border: none !important;
+                  box-shadow: none !important;
+                }
+                .draggable-image img {
+                  display: block;
+                }
                 @media print {
                   body {
                     padding: 0;
@@ -402,6 +933,24 @@
           printWindow.onload = function() {
             printWindow.print();
             // printWindow.close(); // 可选，打印后自动关闭窗口
+            
+            // 恢复图片上的控件
+            setTimeout(() => {
+              images.forEach(img => {
+                const handles = img.querySelectorAll('.resize-handle');
+                const toolbar = img.querySelector('.image-toolbar');
+                
+                handles.forEach(handle => {
+                  handle.style.display = handle.dataset.originalDisplay || '';
+                  delete handle.dataset.originalDisplay;
+                });
+                
+                if (toolbar) {
+                  toolbar.style.display = toolbar.dataset.originalDisplay || '';
+                  delete toolbar.dataset.originalDisplay;
+                }
+              });
+            }, 500);
           };
         });
       });
