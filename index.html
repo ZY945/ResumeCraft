@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Markdown编辑器</title>
+    <!-- 引入html2pdf.js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
       * {
         margin: 0;
@@ -79,6 +81,68 @@
       
       .btn:hover {
         background-color: rgba(255, 255, 255, 0.3);
+      }
+      
+      /* 格式控制样式 */
+      .format-controls {
+        display: flex;
+        margin-top: 10px;
+        gap: 15px;
+        align-items: center;
+      }
+      
+      .font-size-control, .line-spacing-control, .font-family-control {
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        padding: 2px 5px;
+      }
+      
+      .format-btn {
+        background-color: transparent;
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .format-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+      }
+      
+      #font-size-display {
+        color: white;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+      
+      .format-select {
+        background-color: transparent;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='white' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 25px;
+      }
+      
+      .format-select option {
+        background-color: #1e88e5;
+        color: white;
       }
       
       .btn:before {
@@ -427,6 +491,33 @@
           <button class="btn" id="export-pdf">导出PDF</button>
           <input type="file" id="image-input" accept="image/*" style="display: none;">
         </div>
+        <div class="format-controls">
+          <div class="font-size-control">
+            <button class="format-btn" id="decrease-font">-</button>
+            <span id="font-size-display">16px</span>
+            <button class="format-btn" id="increase-font">+</button>
+          </div>
+          <div class="line-spacing-control">
+            <select id="line-spacing-select" class="format-select">
+              <option value="行距">行距</option>
+              <option value="1.0">1.0</option>
+              <option value="1.15">1.15</option>
+              <option value="1.5">1.5</option>
+              <option value="2.0">2.0</option>
+              <option value="2.5">2.5</option>
+            </select>
+          </div>
+          <div class="font-family-control">
+            <select id="font-family-select" class="format-select">
+              <option value="思源黑体">思源黑体</option>
+              <option value="Arial">Arial</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Courier New">Courier New</option>
+              <option value="SimSun">宋体</option>
+              <option value="Microsoft YaHei">微软雅黑</option>
+            </select>
+          </div>
+        </div>
       </header>
       <div class="editor-container">
         <div class="editor-panel">
@@ -581,13 +672,59 @@
           return html;
         }
         
+        // 字体大小和行距控制变量
+        let currentFontSize = 16;
+        let currentLineSpacing = 1.6;
+        let currentFontFamily = '思源黑体';
+        
         // 初始渲染
         markdownPreview.innerHTML = convertMarkdownToHtml(markdownInput.value);
+        applyFormatting();
         
         // 监听输入变化
         markdownInput.addEventListener('input', function() {
           markdownPreview.innerHTML = convertMarkdownToHtml(this.value);
+          applyFormatting();
         });
+        
+        // 字体大小控制
+        document.getElementById('decrease-font').addEventListener('click', function() {
+          if (currentFontSize > 8) {
+            currentFontSize -= 1;
+            document.getElementById('font-size-display').textContent = currentFontSize + 'px';
+            applyFormatting();
+          }
+        });
+        
+        document.getElementById('increase-font').addEventListener('click', function() {
+          if (currentFontSize < 36) {
+            currentFontSize += 1;
+            document.getElementById('font-size-display').textContent = currentFontSize + 'px';
+            applyFormatting();
+          }
+        });
+        
+        // 行距控制
+        document.getElementById('line-spacing-select').addEventListener('change', function() {
+          const selectedValue = this.value;
+          if (selectedValue !== '行距') {
+            currentLineSpacing = parseFloat(selectedValue);
+            applyFormatting();
+          }
+        });
+        
+        // 字体控制
+        document.getElementById('font-family-select').addEventListener('change', function() {
+          currentFontFamily = this.value;
+          applyFormatting();
+        });
+        
+        // 应用格式设置
+        function applyFormatting() {
+          markdownPreview.style.fontSize = currentFontSize + 'px';
+          markdownPreview.style.lineHeight = currentLineSpacing;
+          markdownPreview.style.fontFamily = currentFontFamily;
+        }
         
         // 加载简历模板
         loadResumeTemplateBtn.addEventListener('click', function() {
@@ -627,9 +764,9 @@
           const imgContainer = document.createElement('div');
           imgContainer.className = 'draggable-image';
           imgContainer.id = imageId;
-          imgContainer.style.left = '50px';
+          imgContainer.style.left = '400px'; // 默认放在右上角
           imgContainer.style.top = '50px';
-          imgContainer.dataset.x = '50';
+          imgContainer.dataset.x = '400';
           imgContainer.dataset.y = '50';
           
           // 创建图片
@@ -767,7 +904,9 @@
           dragStartX = e.clientX;
           dragStartY = e.clientY;
           const img = element.querySelector('img');
-          originalWidth = img.offsetWidth;
+          
+          // 如果有保存的宽度，使用保存的宽度，否则使用当前宽度
+          originalWidth = element.dataset.width ? parseFloat(element.dataset.width) : img.offsetWidth;
           originalHeight = img.offsetHeight;
           aspectRatio = originalWidth / originalHeight;
           
@@ -812,6 +951,9 @@
           newHeight = newWidth / aspectRatio;
           
           img.style.width = newWidth + 'px';
+          
+          // 更新图片容器的数据属性，保存当前宽度，以便下次调整大小时使用
+          activeImage.dataset.width = newWidth;
         }
         
         // 结束调整大小
@@ -830,57 +972,42 @@
         
         // 导出PDF功能
         exportPdfBtn.addEventListener('click', function() {
-          // 暂时隐藏图片上的控件
-          const images = markdownPreview.querySelectorAll('.draggable-image');
-          images.forEach(img => {
-            img.classList.remove('active');
-            const handles = img.querySelectorAll('.resize-handle');
-            const toolbar = img.querySelector('.image-toolbar');
-            
-            // 保存原始显示状态
-            handles.forEach(handle => {
-              handle.dataset.originalDisplay = handle.style.display;
-              handle.style.display = 'none';
-            });
-            
-            if (toolbar) {
-              toolbar.dataset.originalDisplay = toolbar.style.display;
-              toolbar.style.display = 'none';
-            }
-          });
-          
-          // 创建一个新的窗口来显示打印预览
+          // 直接使用原生打印方式
           const printWindow = window.open('', '_blank');
           
-          // 写入打印样式和内容
+          // 准备打印内容
           printWindow.document.write(`
             <!DOCTYPE html>
             <html>
             <head>
-              <title>简历预览</title>
+              <meta charset="UTF-8">
+              <title>简历</title>
               <style>
+                @page {
+                  size: A4;
+                  margin: 0;
+                }
                 body {
                   font-family: 'Arial', sans-serif;
                   line-height: 1.6;
                   color: #333;
-                  max-width: 800px;
-                  margin: 0 auto;
-                  padding: 20px;
+                  padding: 20mm;
+                  margin: 0;
                 }
                 .resume-name {
                   font-size: 24px;
                   font-weight: bold;
                   margin-bottom: 5px;
-                  color: #2c3e50;
+                  color: #1e88e5;
                 }
                 .resume-section {
-                  font-size: 18px;
-                  font-weight: bold;
-                  margin-top: 20px;
-                  margin-bottom: 10px;
-                  padding-bottom: 5px;
-                  border-bottom: 1px solid #eaecef;
-                  color: #2c3e50;
+                  font-size: 20px;
+                  font-weight: 600;
+                  margin-top: 24px;
+                  margin-bottom: 12px;
+                  padding-bottom: 6px;
+                  border-bottom: 2px solid #1e88e5;
+                  color: #1e88e5;
                 }
                 .resume-subsection {
                   font-size: 16px;
@@ -897,27 +1024,25 @@
                   margin-bottom: 10px;
                 }
                 a {
-                  color: #3498db;
+                  color: #1e88e5;
                   text-decoration: none;
                 }
-                a:hover {
-                  text-decoration: underline;
-                }
                 .draggable-image {
-                  position: relative !important;
+                  position: absolute;
                   border: none !important;
                   box-shadow: none !important;
                 }
                 .draggable-image img {
                   display: block;
+                  max-width: 300px;
+                }
+                .resize-handle, .image-toolbar {
+                  display: none !important;
                 }
                 @media print {
                   body {
-                    padding: 0;
-                  }
-                  a {
-                    color: #333;
-                    text-decoration: none;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
                   }
                 }
               </style>
@@ -928,29 +1053,76 @@
             </html>
           `);
           
-          // 等待内容加载完成后打印
           printWindow.document.close();
+          
+          // 等待加载完成后打印
           printWindow.onload = function() {
-            printWindow.print();
-            // printWindow.close(); // 可选，打印后自动关闭窗口
+            // 处理图片和控制元素
+            const images = printWindow.document.querySelectorAll('.draggable-image');
+            images.forEach(img => {
+              // 移除控制元素
+              const handles = img.querySelectorAll('.resize-handle');
+              handles.forEach(handle => handle.remove());
+              
+              const toolbar = img.querySelector('.image-toolbar');
+              if (toolbar) toolbar.remove();
+            });
             
-            // 恢复图片上的控件
-            setTimeout(() => {
-              images.forEach(img => {
-                const handles = img.querySelectorAll('.resize-handle');
-                const toolbar = img.querySelector('.image-toolbar');
-                
-                handles.forEach(handle => {
-                  handle.style.display = handle.dataset.originalDisplay || '';
-                  delete handle.dataset.originalDisplay;
-                });
-                
-                if (toolbar) {
-                  toolbar.style.display = toolbar.dataset.originalDisplay || '';
-                  delete toolbar.dataset.originalDisplay;
+            // 添加打印样式
+            const style = printWindow.document.createElement('style');
+            style.textContent = `
+              @media print {
+                @page { margin: 0; }
+                body { margin: 0; padding: 20mm; }
+                .resize-handle, .image-toolbar { display: none !important; }
+              }
+            `;
+            printWindow.document.head.appendChild(style);
+            
+            // 等待图片加载
+            const printImages = printWindow.document.querySelectorAll('img');
+            let loadedImages = 0;
+            
+            const checkAllImagesLoaded = () => {
+              if (loadedImages === printImages.length) {
+                setTimeout(() => {
+                  printWindow.print();
+                  printWindow.onfocus = function() {
+                    // 打印完成后关闭窗口
+                    setTimeout(function() { printWindow.close(); }, 500);
+                  };
+                }, 500);
+              }
+            };
+            
+            if (printImages.length === 0) {
+              // 没有图片，直接打印
+              setTimeout(() => { printWindow.print(); }, 500);
+            } else {
+              // 等待所有图片加载
+              printImages.forEach(img => {
+                if (img.complete) {
+                  loadedImages++;
+                  checkAllImagesLoaded();
+                } else {
+                  img.onload = function() {
+                    loadedImages++;
+                    checkAllImagesLoaded();
+                  };
+                  img.onerror = function() {
+                    loadedImages++;
+                    checkAllImagesLoaded();
+                  };
                 }
               });
-            }, 500);
+              
+              // 超时处理
+              setTimeout(() => {
+                if (loadedImages < printImages.length) {
+                  printWindow.print();
+                }
+              }, 3000);
+            }
           };
         });
       });
